@@ -10,8 +10,8 @@ COPY package*.json ./
 
 # Install any needed packages
 RUN npm install --only=production
-RUN npm run build
 RUN npm i -g @nestjs/cli
+RUN npm run build
 
 COPY . .
 
