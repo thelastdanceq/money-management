@@ -10,7 +10,7 @@ COPY package*.json ./
 
 # Install any needed packages
 RUN npm install --only=production
-RUN npm build
+RUN npm run build
 
 COPY . .
 
