@@ -17,13 +17,14 @@ import { JwtModule } from '@nestjs/jwt';
 import { ApiKeySchema } from './monobankApikeys/apikeys.schema';
 import { ApiKeysService } from './monobankApikeys/apikeys.service';
 
+console.log('process.env.MONGODB_URI', process.env.MONGODB_URI);
 @Module({
   imports: [
     JwtModule.register({
       secret: 'vladik',
       signOptions: { expiresIn: '60m' },
     }),
-    MongooseModule.forRoot('mongodb://localhost:27017'),
+    MongooseModule.forRoot(process.env.MONGODB_URI),
     MongooseModule.forFeature([
       { name: 'MonobankUserData', schema: MonobankUserDataSchema },
       {

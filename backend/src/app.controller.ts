@@ -88,4 +88,9 @@ export class AppController {
     const userId = req.user.userId;
     await this.apikeysService.create(userId, body.apiKey);
   }
+
+  @Get('version')
+  getVersion(): string {
+    return '1.0.0';
+  }
 }
