@@ -7,6 +7,10 @@ class BackendCommunicationSingleton {
   public async getVersion() {
     return this.axiosInstance.get('/version');
   }
+
+  public async getUserData() {
+    return this.axiosInstance.get('/get-user-data');
+  }
 }
 
 export const BackendCommunication = new BackendCommunicationSingleton(

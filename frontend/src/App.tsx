@@ -3,9 +3,11 @@ import { BackendCommunication } from './api/BackendCommunication.ts';
 
 function App() {
   useEffect(() => {
-    BackendCommunication.getVersion().then((version) => {
-      console.log(version);
-    });
+    async function test() {
+      const data = await BackendCommunication.getUserData();
+      console.log(data);
+    }
+    test();
   }, []);
   return <>asdasd</>;
 }
