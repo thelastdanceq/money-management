@@ -16,8 +16,8 @@ function App() {
       const urlParams = new URLSearchParams(window.location.search);
       const token = urlParams.get('token');
 
-      setAccessToken(token);
       if (token) {
+        setAccessToken(token);
         localStorage.setItem('jwtToken', token);
         window.history.replaceState({}, document.title, window.location.pathname);
       }
