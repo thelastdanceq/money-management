@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { BackendCommunication } from './api/BackendCommunication.ts';
+import { setAccessToken } from "./api/token.ts";
 
 function App() {
   useEffect(() => {
@@ -8,6 +9,22 @@ function App() {
       console.log(data);
     }
     test();
+  }, []);
+
+  useEffect(() => {
+    function handleInit() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const token = urlParams.get('token');
+
+      setAccessToken(token);
+      if (token) {
+        localStorage.setItem('jwtToken', token);
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+    };
+
+    handleInit();
+
   }, []);
 
   async function login() {

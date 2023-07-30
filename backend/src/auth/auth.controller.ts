@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards, Req, Post, Body } from '@nestjs/common';
+import { Controller, Get, UseGuards, Req, Post, Body ,Res} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtService } from '@nestjs/jwt';
 import { JWTPayload } from './jwt.interface';
@@ -12,8 +12,13 @@ export class AuthController {
 
   @Get('google/redirect')
   @UseGuards(AuthGuard('google'))
-  async googleAuthRedirect(@Req() req) {
-    return req.user;
+  async googleAuthRedirect(@Req() req, @Res() res) {
+    const user = req.user;
+    const token = this.jwtService.sign(user);
+
+    // Replace 'http://your-web-app.com' with the URL of your web application
+    // You can append the token or other necessary data as URL parameters
+    res.redirect(`http://localhost:5173?token=${token}`);
   }
   @Get('protected')
   @UseGuards(AuthGuard('jwt'))
