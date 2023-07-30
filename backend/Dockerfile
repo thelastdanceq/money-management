@@ -1,4 +1,4 @@
-FROM node:16
+FROM node:18-alpine
 
 WORKDIR /app
 
@@ -17,4 +17,5 @@ COPY . ./
 
 EXPOSE 3000
 
+# Define the command to run your app using CMD which defines your runtime
 CMD [ "pnpm", "run", "start:prod" ]
