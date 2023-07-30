@@ -6,7 +6,7 @@ on:
       - deploy
 
 jobs:
-  build_and_deploy:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -20,7 +20,12 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            echo "Current directory:"
-            pwd
-            echo "Directory contents:"
-            ls
+            cd projects/test/money-management/
+            git checkout deploy
+            git pull
+            cd backend
+            docker-compose down
+            docker-compose up --build -d
+            cd ../frontend
+            docker-compose down
+            docker-compose up --build -d
