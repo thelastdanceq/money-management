@@ -4,12 +4,11 @@ WORKDIR /app
 
 COPY package*.json ./
 COPY pnpm-lock.yaml ./
+COPY tsconfig*.json ./
 
 RUN npm install -g pnpm
 RUN pnpm install --prod
 RUN npm i -g @nestjs/cli
-
-COPY tsconfig*.json ./
 
 RUN pnpm run build
 
