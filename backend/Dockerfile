@@ -10,9 +10,9 @@ RUN npm install -g pnpm
 RUN pnpm install --prod
 RUN npm i -g @nestjs/cli
 
+COPY . ./
 RUN pnpm run build
 
-COPY . ./
 
 EXPOSE 3000
 

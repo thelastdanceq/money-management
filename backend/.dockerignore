@@ -9,3 +9,6 @@ README.md
 LICENSE
 .vscode
 .idea
+dist
+.env
+docker.env
