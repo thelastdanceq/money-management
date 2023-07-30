@@ -9,7 +9,13 @@ function App() {
     }
     test();
   }, []);
-  return <>asdasd</>;
+
+  async function login() {
+    const data = await BackendCommunication.loginViaGoogle();
+  }
+  return <>
+    <button onClick={login}> Login </button>
+  </>;
 }
 
 export default App;

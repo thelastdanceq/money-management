@@ -11,6 +11,10 @@ class BackendCommunicationSingleton {
   public async getUserData() {
     return this.axiosInstance.get('/get-user-data');
   }
+
+  public async loginViaGoogle() {
+    return this.axiosInstance.get('/auth/google');
+  }
 }
 
 export const BackendCommunication = new BackendCommunicationSingleton(
