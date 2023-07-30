@@ -19,4 +19,8 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_KEY }}
-          script: echo "Hello, World!"
+          script: |
+            echo "Current directory:"
+            pwd
+            echo "Directory contents:"
+            ls
