@@ -17,7 +17,6 @@ import { JwtModule } from '@nestjs/jwt';
 import { ApiKeySchema } from './monobankApikeys/apikeys.schema';
 import { ApiKeysService } from './monobankApikeys/apikeys.service';
 
-console.log('process.env.MONGODB_URI', process.env.MONGODB_URI);
 @Module({
   imports: [
     JwtModule.register({
