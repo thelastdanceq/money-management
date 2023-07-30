@@ -11,7 +11,8 @@ function App() {
   }, []);
 
   async function login() {
-    const data = await BackendCommunication.loginViaGoogle();
+    await BackendCommunication.loginViaGoogle();
+
   }
   return <>
     <button onClick={login}> Login </button>
