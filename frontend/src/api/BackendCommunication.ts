@@ -13,7 +13,8 @@ class BackendCommunicationSingleton {
   }
 
   public async loginViaGoogle() {
-    window.location.href = 'http://ec2-13-51-168-225.eu-north-1.compute.amazonaws.com:3000/auth/google';
+    const redirectUri = encodeURIComponent(window.location.origin);
+    window.location.href = `http://ec2-13-51-168-225.eu-north-1.compute.amazonaws.com:3000/auth/google?redirect_uri=${redirectUri}`;
   }
 }
 

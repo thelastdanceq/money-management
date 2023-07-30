@@ -8,7 +8,9 @@ export class AuthController {
   constructor(private jwtService: JwtService) {}
   @Get('google')
   @UseGuards(AuthGuard('google'))
-  async googleAuth(@Req() req) {}
+  async googleAuth(@Req() req) {
+    req.session.redirect_uri = req.query.redirect_uri;
+  }
 
   @Get('google/redirect')
   @UseGuards(AuthGuard('google'))
@@ -16,9 +18,8 @@ export class AuthController {
     const user = req.user;
     const token = this.jwtService.sign(user);
 
-    // Replace 'http://your-web-app.com' with the URL of your web application
-    // You can append the token or other necessary data as URL parameters
-    res.redirect(`http://localhost:5173?token=${token}`);
+    const redirectUri = req.session.redirect_uri;
+    res.redirect(`${redirectUri}?token=${token}`);
   }
   @Get('protected')
   @UseGuards(AuthGuard('jwt'))

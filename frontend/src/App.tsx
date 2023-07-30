@@ -18,7 +18,6 @@ function App() {
 
       if (token) {
         setAccessToken(token);
-        localStorage.setItem('jwtToken', token);
         window.history.replaceState({}, document.title, window.location.pathname);
       }
     };
@@ -29,7 +28,6 @@ function App() {
 
   async function login() {
     await BackendCommunication.loginViaGoogle();
-
   }
   return <>
     <button onClick={login}> Login </button>
