@@ -8,6 +8,7 @@ services:
       - NODE_ENV=production
       - MONGODB_URI=mongodb://mongodb:27017
       - SERVICE_URL=http://ec2-13-51-168-225.eu-north-1.compute.amazonaws.com:3000
+      - FRONTEND_URL=http://localhost:5173
     depends_on:
       - mongodb
   mongodb:
