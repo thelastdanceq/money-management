@@ -1,25 +1,39 @@
-import { Controller, Get, UseGuards, Req, Post, Body ,Res} from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  UseGuards,
+  Req,
+  Post,
+  Body,
+  Res,
+  Query,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtService } from '@nestjs/jwt';
 import { JWTPayload } from './jwt.interface';
+import * as process from 'process';
 
 @Controller('auth')
 export class AuthController {
   constructor(private jwtService: JwtService) {}
+
+  @Get('login')
+  login(@Req() req, @Res() res, @Query('redirectUrl') redirectUrl: string) {
+    res.redirect(`/auth/google?state=${redirectUrl}`);
+  }
   @Get('google')
   @UseGuards(AuthGuard('google'))
-  async googleAuth(@Req() req) {
-    req.session.redirect_uri = req.query.redirect_uri;
-  }
+  async googleAuth(@Req() req) {}
 
   @Get('google/redirect')
   @UseGuards(AuthGuard('google'))
   async googleAuthRedirect(@Req() req, @Res() res) {
     const user = req.user;
-    const token = this.jwtService.sign(user);
+    const token = user.jwt;
+    const redirectUrl = user.redirectUrl || process.env.FRONTEND_URL;
 
-    const redirectUri = req.session.redirect_uri;
-    res.redirect(`${redirectUri}?token=${token}`);
+    console.log(user);
+    res.redirect(`${redirectUrl}?token=${token}`);
   }
   @Get('protected')
   @UseGuards(AuthGuard('jwt'))
