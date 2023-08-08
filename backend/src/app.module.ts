@@ -14,9 +14,11 @@ import { UsersService } from './infra/user/user.service';
 import { UserSchema } from './infra/user/user.schema';
 import { JwtStrategy } from './auth/jwt.strategy';
 import { JwtModule } from '@nestjs/jwt';
-import { ApiKeySchema } from './monobankApikeys/apikeys.schema';
-import { ApiKeysService } from './monobankApikeys/apikeys.service';
+import { ApiKeySchema } from './apiKeys/apikeys.schema';
+import { ApiKeysService } from './apiKeys/apikeys.service';
 import { BinanceService } from './crypto/binance/binance.service';
+import { MonobankController } from './monobank.controller';
+import { BinanceController } from './binance.controller';
 
 @Module({
   imports: [
@@ -38,7 +40,12 @@ import { BinanceService } from './crypto/binance/binance.service';
       { name: 'ApiKey', schema: ApiKeySchema },
     ]),
   ],
-  controllers: [AppController, AuthController],
+  controllers: [
+    AppController,
+    AuthController,
+    MonobankController,
+    BinanceController,
+  ],
   providers: [
     MonobankService,
     MonobankTransactionService,

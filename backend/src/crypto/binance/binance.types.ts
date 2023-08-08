@@ -1,0 +1,40 @@
+export type CoinInfo = {
+  coin: string;
+  depositAllEnable: boolean;
+  free: string;
+  freeze: string;
+  ipoable: string;
+  ipoing: string;
+  isLegalMoney: boolean;
+  locked: string;
+  name: string;
+  networkList: Network[];
+  storage: string;
+  trading: boolean;
+  withdrawAllEnable: boolean;
+  withdrawing: string;
+};
+
+export type Network = {
+  addressRegex: string;
+  coin: string;
+  depositEnable: boolean;
+  isDefault: boolean;
+  memoRegex: string;
+  minConfirm: number;
+  name: string;
+  network: string;
+  resetAddressStatus: boolean;
+  specialTips: string;
+  unLockConfirm: number;
+  withdrawEnable: boolean;
+  withdrawFee: string;
+  withdrawIntegerMultiple: string;
+  withdrawMax: string;
+  withdrawMin: string;
+  sameAddress: boolean;
+  estimatedArrivalTime: number;
+  busy: boolean;
+  depositDesc?: string;
+  withdrawDesc?: string;
+};

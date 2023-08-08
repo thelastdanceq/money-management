@@ -13,9 +13,8 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     private jwtService: JwtService,
   ) {
     super({
-      clientID:
-        '1086729190482-armi0qi6v8dgtp13kli6j98g6is2e59o.apps.googleusercontent.com',
-      clientSecret: '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',
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: `${process.env.SERVICE_URL}/auth/google/redirect`,
       scope: ['email', 'profile'],
     });
