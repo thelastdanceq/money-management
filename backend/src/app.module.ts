@@ -16,6 +16,7 @@ import { JwtStrategy } from './auth/jwt.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { ApiKeySchema } from './monobankApikeys/apikeys.schema';
 import { ApiKeysService } from './monobankApikeys/apikeys.service';
+import { BinanceService } from './crypto/binance/binance.service';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { ApiKeysService } from './monobankApikeys/apikeys.service';
     UsersService,
     JwtStrategy,
     ApiKeysService,
+    BinanceService,
   ],
 })
 export class AppModule {}

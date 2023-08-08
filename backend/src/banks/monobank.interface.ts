@@ -1,11 +1,11 @@
 export interface IMonobankUserData {
   clientId: string;
+  userId: string;
   name: string;
   webHookUrl: string;
   permissions: string[];
   accounts: IMonobankAccount[];
   jars: IMonobankJar[];
-  apiKey: string;
   created: number;
   updated: number;
 }
@@ -32,7 +32,10 @@ export interface IMonobankJar {
 }
 
 export interface IMonobankTransaction {
-  apiKey: string;
+  /**
+   * IBAN of the account to which this transaction belongs to
+   */
+  accountIBAN: string;
   id: string;
   time: number;
   description: string;

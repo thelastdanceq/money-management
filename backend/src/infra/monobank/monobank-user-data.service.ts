@@ -22,15 +22,15 @@ export class MonobankUserDataService {
   ): Promise<IMonobankUserData> {
     return this.monobankUserDataModel
       .findOneAndUpdate(
-        { apiKey: createMonobankUserDataDto.apiKey },
+        { userId: createMonobankUserDataDto.userId },
         createMonobankUserDataDto,
         { upsert: true },
       )
       .exec();
   }
 
-  async findOne(apiKey: string): Promise<IMonobankUserData> {
-    return this.monobankUserDataModel.findOne({ apiKey: apiKey }).exec();
+  async findOne(userId: string): Promise<IMonobankUserData> {
+    return this.monobankUserDataModel.findOne({ userId }).exec();
   }
 
   async findAll(): Promise<IMonobankUserData[]> {

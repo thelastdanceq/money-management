@@ -11,9 +11,13 @@ import {
 import { MonobankService } from './banks/monobank.service';
 import { MonobankUserDataService } from './infra/monobank/monobank-user-data.service';
 import { MonobankTransactionService } from './infra/monobank/monobank-transaction.service';
-import { IMonobankTransaction } from './banks/monobank.interface';
+import {
+  IMonobankAccount,
+  IMonobankTransaction,
+} from './banks/monobank.interface';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiKeysService } from './monobankApikeys/apikeys.service';
+import { BinanceService } from './crypto/binance/binance.service';
 
 @Controller()
 export class AppController {
@@ -22,6 +26,7 @@ export class AppController {
     private readonly monobankUserDataService: MonobankUserDataService,
     private readonly monobankTransactionService: MonobankTransactionService,
     private readonly apikeysService: ApiKeysService,
+    private readonly binanceService: BinanceService,
   ) {}
 
   @Get('/get-user-data')
@@ -34,18 +39,23 @@ export class AppController {
     }
     try {
       const data = await this.monoBankService.fetchAccountData(apiKey.key);
-      this.monobankUserDataService.createOrUpdate(data);
+      this.monobankUserDataService.createOrUpdate({ ...data, userId });
       return data;
     } catch (e) {
       if (
         e instanceof HttpException &&
         e.getStatus() === HttpStatus.TOO_MANY_REQUESTS
       ) {
-        return await this.monobankUserDataService.findOne(apiKey.key);
+        return await this.monobankUserDataService.findOne(userId);
       } else {
         throw e;
       }
     }
+  }
+
+  @Get('/get-binance-user-data')
+  async getBinanceUserData(): Promise<any> {
+    return this.binanceService.getUserData();
   }
 
   @Post('/get-user-transactions')
@@ -59,6 +69,14 @@ export class AppController {
     if (!apiKey) {
       throw new HttpException('Api key not found', HttpStatus.NOT_FOUND);
     }
+    const userData = await this.monobankUserDataService.findOne(userId);
+    const account = userData.accounts.find(
+      (account) => account.id === body.accountId,
+    );
+    if (!account) {
+      throw new HttpException('Account not found', HttpStatus.NOT_FOUND);
+    }
+
     try {
       const data = await this.monoBankService.fetchTransactionHistory(
         apiKey.key,
@@ -67,15 +85,22 @@ export class AppController {
         body.to,
       );
 
-      this.monobankTransactionService.createOrUpdateMany(data);
+      const fullData = data.map((transaction) => ({
+        ...transaction,
+        accountIBAN: account.iban,
+      }));
 
-      return data;
+      this.monobankTransactionService.createOrUpdateMany(fullData);
+
+      return fullData;
     } catch (e) {
       if (
         e instanceof HttpException &&
         e.getStatus() === HttpStatus.TOO_MANY_REQUESTS
       ) {
-        return await this.monobankTransactionService.findByApiKey(apiKey.key);
+        return await this.monobankTransactionService.findByAccountId(
+          account.iban,
+        );
       } else {
         throw e;
       }
@@ -86,7 +111,30 @@ export class AppController {
   @UseGuards(AuthGuard('jwt'))
   async addMonobankApikey(@Req() req, @Body() body): Promise<void> {
     const userId = req.user.userId;
-    await this.apikeysService.create(userId, body.apiKey);
+    const apiKey = body.apiKey;
+    if (!apiKey) {
+      throw new HttpException('Api key not found', HttpStatus.NOT_FOUND);
+    }
+    const [byApiKey, byUserId] = await Promise.all([
+      this.apikeysService.findByApiKey(apiKey),
+      this.apikeysService.findByUserId(userId),
+    ]);
+    if (byApiKey !== null || byUserId !== null) {
+      throw new HttpException('Api key already exists', HttpStatus.CONFLICT);
+    }
+
+    try {
+      const data = await this.monoBankService.fetchAccountData(apiKey);
+      await this.monobankUserDataService.createOrUpdate({ ...data, userId });
+      await this.apikeysService.create(userId, apiKey);
+    } catch (e) {
+      if (
+        e instanceof HttpException &&
+        e.getStatus() === HttpStatus.FORBIDDEN
+      ) {
+        throw new HttpException('Invalid api key', HttpStatus.FORBIDDEN);
+      }
+    }
   }
 
   @Get('version')

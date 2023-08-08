@@ -48,7 +48,7 @@ export class MonobankTransactionService {
     return this.monobankTransactionModel.find().exec();
   }
 
-  async findByApiKey(apiKey: string): Promise<IMonobankTransaction[]> {
-    return this.monobankTransactionModel.find({ apiKey }).exec();
+  async findByAccountId(accountIBAN: string): Promise<IMonobankTransaction[]> {
+    return this.monobankTransactionModel.find({ accountIBAN }).exec();
   }
 }

@@ -21,16 +21,17 @@ export class MonobankJarDto {
 
 export class CreateMonobankUserDataDto {
   clientId: string;
+  userId: string;
   name: string;
   webHookUrl: string;
   permissions: string[];
   accounts: MonobankAccountDto[];
   jars: MonobankJarDto[];
-  apiKey: string;
 }
 
 export class CreateMonobankTransactionDto {
   id: string;
+  accountIBAN: string;
   time: number;
   description: string;
   mcc: number;

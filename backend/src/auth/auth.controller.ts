@@ -1,16 +1,6 @@
-import {
-  Controller,
-  Get,
-  UseGuards,
-  Req,
-  Post,
-  Body,
-  Res,
-  Query,
-} from '@nestjs/common';
+import { Controller, Get, UseGuards, Req, Res, Query } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtService } from '@nestjs/jwt';
-import { JWTPayload } from './jwt.interface';
 import * as process from 'process';
 
 @Controller('auth')
@@ -30,9 +20,8 @@ export class AuthController {
   async googleAuthRedirect(@Req() req, @Res() res) {
     const user = req.user;
     const token = user.jwt;
-    const redirectUrl = user.redirectUrl || process.env.FRONTEND_URL;
+    const redirectUrl = process.env.FRONTEND_URL;
 
-    console.log(user);
     res.redirect(`${redirectUrl}?token=${token}`);
   }
   @Get('protected')

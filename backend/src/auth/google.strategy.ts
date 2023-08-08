@@ -18,14 +18,12 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       clientSecret: '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',
       callbackURL: `${process.env.SERVICE_URL}/auth/google/redirect`,
       scope: ['email', 'profile'],
-      passReqToCallback: true,
     });
   }
 
   async validate(
     req: Request,
     accessToken: string,
-    refreshToken: string,
     profile: any,
     done: VerifyCallback,
   ): Promise<any> {
@@ -36,9 +34,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       lastName: name.familyName,
       picture: photos[0].value,
       accessToken,
-      redirectUrl: (req as any)?.query?.state,
     };
-    console.log('req', (req as any).query);
 
     let userInDb = await this.usersService.findByEmail(user.email);
     if (!userInDb) {
@@ -48,6 +44,6 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     const payload: JWTPayload = { email: userInDb.email, sub: userInDb._id };
     const jwt = this.jwtService.sign(payload);
 
-    done(null, { jwt, redirectUrl: user.redirectUrl });
+    done(null, { jwt });
   }
 }

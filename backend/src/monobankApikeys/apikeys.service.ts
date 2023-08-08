@@ -13,6 +13,10 @@ export class ApiKeysService {
   }
 
   async findByUserId(userId: string) {
-    return this.apiKeyModel.findOne({ userId }).exec();
+    return await this.apiKeyModel.findOne({ userId }).exec();
+  }
+
+  async findByApiKey(apiKey: string) {
+    return await this.apiKeyModel.findOne({ key: apiKey }).exec();
   }
 }

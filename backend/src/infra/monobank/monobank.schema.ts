@@ -29,16 +29,17 @@ export const MonobankJarSchema = new Schema<IMonobankJar>({
 
 export const MonobankUserDataSchema = new Schema<IMonobankUserData>({
   clientId: String,
+  userId: String,
   name: String,
   webHookUrl: String,
   permissions: [String],
   accounts: [MonobankAccountSchema],
   jars: [MonobankJarSchema],
-  apiKey: String,
 });
 
 export const MonobankTransactionSchema = new Schema<IMonobankTransaction>({
   id: String,
+  accountIBAN: String,
   time: Number,
   description: String,
   mcc: Number,
@@ -56,5 +57,4 @@ export const MonobankTransactionSchema = new Schema<IMonobankTransaction>({
   counterEdrpou: String,
   counterIban: String,
   counterName: String,
-  apiKey: String,
 });
