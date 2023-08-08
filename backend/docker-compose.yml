@@ -9,6 +9,8 @@ services:
       - MONGODB_URI=mongodb://mongodb:27017
       - SERVICE_URL=http://ec2-13-51-168-225.eu-north-1.compute.amazonaws.com:3000
       - FRONTEND_URL=http://localhost:5173
+      - GOOGLE_CLIENT_ID=1086729190482-armi0qi6v8dgtp13kli6j98g6is2e59o.apps.googleusercontent.com
+      - GOOGLE_CLIENT_SECRET=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
     depends_on:
       - mongodb
   mongodb:
